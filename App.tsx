@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 const Drawer = createDrawerNavigator();
 
-export const App = () => {
+export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>

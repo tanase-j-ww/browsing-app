@@ -2,13 +2,26 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View, Linking } from 'react-native';
 import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
+import axios from 'axios';
 
-enablePromise(true);
+// enablePromise(true);
 
-openDatabase({name: 'my.db', location: 'default'}, successcb, errorcb);
+// openDatabase({name: 'my.db', location: 'default'}, successcb, errorcb);
 
 export const HomeScreen = () => {
     const [text, onChangeText] = useState<string>('');
+    const sendMessageToSlack = async() => {
+      const webhookUrl: string = 'https://hooks.slack.com/services/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'
+      try {
+        const response = await axios.post(webhookUrl,{
+            text: text
+          });
+        console.log('message sent', response.data);
+      }
+      catch(e) {
+        console.error('error', e);
+      }
+    };
   return (
     <View style={styles.container}>
       <Text>Hello World</Text>
@@ -17,9 +30,10 @@ export const HomeScreen = () => {
         onChangeText={onChangeText}
         value={text}
       />
+      <Text>{text}</Text>
       <Button
         title={"button"}
-        onPress={() => console.log('Button pushed')}
+        onPress={sendMessageToSlack}
       />
       <OpenURLButton
         url={`https://slack.com/app_redirect?app=${appId}`}
