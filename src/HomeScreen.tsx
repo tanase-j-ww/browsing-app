@@ -1,18 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import * as SQLite from 'expo-sqlite';
+import { Button, StyleSheet, Text, TextInput, View, Linking } from 'react-native';
+import { enablePromise, openDatabase } from 'react-native-sqlite-storage';
 
-const db = SQLite.openDatabase('mydb.db');
-db.transaction(tx => {
-    tx.executeSql('SELECT * FROM items', [], (_, { rows }) => {
-      console.log('Query result:', rows);
-    });
-  });
-  
+enablePromise(true);
+
+openDatabase({name: 'my.db', location: 'default'}, successcb, errorcb);
 
 export const HomeScreen = () => {
-    const [text, onChangeText] = useState<string>();
+    const [text, onChangeText] = useState<string>('');
   return (
     <View style={styles.container}>
       <Text>Hello World</Text>
@@ -25,9 +21,21 @@ export const HomeScreen = () => {
         title={"button"}
         onPress={() => console.log('Button pushed')}
       />
+      <OpenURLButton
+        url={`https://slack.com/app_redirect?app=${appId}`}
+      />
       <StatusBar style="auto" />
     </View>
   );
+}
+
+const appId = "A123456789";
+
+const OpenURLButton = ({url}: {url: string}) => {
+  const onpress = () => {
+    Linking.openURL(url)
+  }
+  return(<Button title='poti' onPress={onpress}/>)
 }
 
 const styles = StyleSheet.create({
