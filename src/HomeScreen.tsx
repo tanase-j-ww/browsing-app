@@ -6,12 +6,12 @@ import axios from 'axios';
 
 // enablePromise(true);
 
-// openDatabase({name: 'my.db', location: 'default'}, successcb, errorcb);
+// const db = openDatabase({name: 'my.db', location: 'default'});
 
 export const HomeScreen = () => {
     const [text, onChangeText] = useState<string>('');
     const sendMessageToSlack = async() => {
-      const webhookUrl: string = 'https://hooks.slack.com/services/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'
+      const webhookUrl: string = 'https://hooks.slack.com/services/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'
       try {
         const response = await axios.post(webhookUrl,{
             text: text
